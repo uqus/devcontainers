@@ -1,0 +1,18 @@
+{
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "react",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "jitendrasoni.text-case-changer",
+        "meganrogge.template-string-converter",
+        "rodrigovallades.es7-react-js-snippets",
+        "tyriar.sort-lines"
+      ]
+    }
+  }
+}

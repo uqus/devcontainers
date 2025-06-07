@@ -1,0 +1,5 @@
+alias rc='bundle exec rails console'
+alias rr='bundle exec rails routes'
+alias rdm='bundle exec rails db:migrate'
+alias rdr='bundle exec rails db:rollback'
+alias rds='bundle exec rails db:seed'

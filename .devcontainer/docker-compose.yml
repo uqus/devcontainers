@@ -1,0 +1,65 @@
+name: rails-react
+
+services:
+  rails:
+    container_name: rails
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres
+    build:
+      context: ruby
+      dockerfile: Dockerfile
+    entrypoint: ./.devcontainer/entrypoint.sh
+    env_file:
+      - ruby/env
+    ports:
+      - 3030:3000
+    volumes:
+      - ./ruby:/app/.devcontainer/
+      - ../rails:/app/
+      - bundle:/opt/bundle/
+    networks:
+      - default
+    restart: unless-stopped
+
+  react:
+    container_name: react
+    stdin_open: true
+    tty: true
+    build:
+      context: node
+      dockerfile: Dockerfile
+    entrypoint: ./.devcontainer/entrypoint.sh
+    env_file:
+      - node/env
+    ports:
+      - 3000:5173
+    volumes:
+      - ./node:/app/.devcontainer/
+      - ../react:/app/
+      - node_modules:/app/node_modules/
+    networks:
+      - default
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - default
+    restart: unless-stopped
+
+volumes:
+  bundle:
+  node_modules:
+  postgres_data:
+
+networks:
+  default:
