@@ -1,9 +1,15 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+require 'csv'
+
+City.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!(City.table_name)
+
+State.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!(State.table_name)
+
+attributes = CSV.read(Rails.root.join('db/data/states.csv'))
+State.create(attributes.map { |data| { name: data[0], abbreviation: data[1] }})
+
+states = State.pluck(:abbreviation, :id).to_h
+
+attributes = CSV.read(Rails.root.join('db/data/cities.csv'))
+City.create(attributes.map { |data| { name: data[0], state_id: states[data[1]], population: data[2].to_i }})
